@@ -3,103 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Cyber Aware</title>
-
+    <title>Cyber Aware — Cyber Defense Simulation</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
-
 <body>
 
-    <main class="container">
+<!-- SYSTEM CONTROL PANEL -->
+<header class="top-nav">
+    <button id="theme-btn" class="nav-icon-btn" onclick="toggleTheme()" title="Toggle Interface Theme">
+        ☀️ <span class="nav-btn-text">Light</span>
+    </button>
+    <button id="kill-btn" class="nav-icon-btn danger" onclick="triggerPurgeProtocol()" title="Panic Wipe System">
+        💀 <span class="nav-btn-text">Purge</span>
+    </button>
+    <button id="open-settings-btn" class="nav-icon-btn" onclick="toggleSettingsModal(true)" title="Configure Gemini AI Key">
+        ⚙️ <span class="nav-btn-text">API</span>
+    </button>
+</header>
 
-        <!-- HOME SCREEN -->
-        <section id="home-screen" class="screen">
+<!-- PANIC PURGE OVERLAY -->
+<div id="purge-screen" class="hidden">
+    <div id="purge-terminal"></div>
+</div>
 
-            <div class="shield">🛡️</div>
+<main class="container">
 
-            <h1>CYBER AWARE</h1>
+    <!-- HOME SCREEN -->
+    <section id="home-screen" class="screen">
+        <div class="shield-badge">🛡️</div>
+        <h1>CYBER AWARE</h1>
+        <p class="tagline">Tactical Cyber Defense Simulator</p>
+        <p class="desc">
+            Train your reflexes against digital scams, social engineering traps, and phishing breaches in real-time.
+        </p>
 
-            <p class="tagline">
-                Think before you click.
-            </p>
-
-            <p>
-                Test your cybersecurity awareness through
-                real-world scenarios.
-            </p>
-
-            <button onclick="startQuiz()">
-                START SIMULATION
+        <div class="mode-select">
+            <button class="btn primary" onclick="startGame('classic')">
+                🛡️ Standard Training
             </button>
+            <button class="btn ai-mode" onclick="startGame('ai')">
+                ✨ AI Infinite Mode
+            </button>
+        </div>
+    </section>
 
-        </section>
-
-
-        <!-- QUIZ SCREEN -->
-        <section id="quiz-screen" class="screen hidden">
-
-            <div class="top-bar">
-
-                <span id="question-number">
-                    Scenario 1 / 10
-                </span>
-
-                <span id="score">
-                    Score: 0
-                </span>
-
+    <!-- QUIZ / SIMULATION SCREEN -->
+    <section id="quiz-screen" class="screen hidden">
+        <div class="hud-top">
+            <div class="hud-item">
+                <span class="hud-label">SCENARIO</span>
+                <span id="question-number" class="hud-val">1 / 10</span>
             </div>
-
-            <div class="progress-container">
-                <div id="progress"></div>
+            <div class="hud-item">
+                <span class="hud-label">SHIELD INTEGRITY</span>
+                <span id="lives-display" class="hud-val">❤️❤️❤️</span>
             </div>
+            <div class="hud-item">
+                <span class="hud-label">XP & MULTIPLIER</span>
+                <span id="score-display" class="hud-val">0 XP (x1)</span>
+            </div>
+        </div>
 
-            <h2 id="question">
-                Question goes here
-            </h2>
+        <div class="progress-bar-container">
+            <div id="progress-bar" class="progress-bar"></div>
+        </div>
 
-            <div id="options"></div>
-
-            <div id="feedback" class="hidden">
-
-                <h3 id="feedback-title"></h3>
-
-                <p id="feedback-text"></p>
-
-                <button onclick="nextQuestion()">
-                    NEXT SCENARIO →
+        <div class="scenario-card">
+            <div class="scenario-header">
+                <div id="scenario-type" class="scenario-tag">🚨 Suspicious Alert</div>
+                <button id="read-aloud-btn" class="chip-btn" onclick="readScenarioAloud()">
+                    🔊 <span>Read</span>
                 </button>
+            </div>
+            <h2 id="question">Scenario description loading...</h2>
+        </div>
 
+        <div id="options" class="options-grid"></div>
+
+        <!-- FEEDBACK DRAWER -->
+        <div id="feedback" class="feedback-card hidden">
+            <div class="feedback-header">
+                <span id="feedback-icon">✅</span>
+                <h3 id="feedback-title">Analysis</h3>
+            </div>
+            <p id="feedback-text"></p>
+            
+            <div class="ai-copilot-box">
+                <div class="copilot-controls">
+                    <span>🤖 AI Mentor:</span>
+                    <button type="button" class="chip-btn" onclick="askAiCopilot('kid')">Explain to a 10-Year-Old</button>
+                    <button type="button" class="chip-btn" onclick="askAiCopilot('senior')">Simple Real-World Analogy</button>
+                </div>
+                <div id="copilot-response" class="copilot-text hidden"></div>
             </div>
 
-        </section>
-
-
-        <!-- RESULT SCREEN -->
-        <section id="result-screen" class="screen hidden">
-
-            <div class="shield">🏆</div>
-
-            <h1>SIMULATION COMPLETE</h1>
-
-            <div class="final-score">
-                <span id="final-score">0</span>/100
-            </div>
-
-            <h2 id="result-title"></h2>
-
-            <p id="result-description"></p>
-
-            <button onclick="restartQuiz()">
-                TRY AGAIN
+            <button id="next-btn" class="btn primary" onclick="nextQuestion()">
+                NEXT SCENARIO →
             </button>
+        </div>
+    </section>
 
-        </section>
+    <!-- RESULT / BADGE SCREEN -->
+    <section id="result-screen" class="screen hidden">
+        <div class="shield-badge" id="result-badge">🏆</div>
+        <h1>SIMULATION REPORT</h1>
 
-    </main>
+        <div class="score-display">
+            <div class="final-score" id="final-score">0</div>
+            <span class="score-unit">TOTAL XP EARNED</span>
+        </div>
 
-    <script src="script.js"></script>
+        <h2 id="result-title">Cyber Sentinel</h2>
+        <p id="result-description" class="desc"></p>
 
+        <div class="stats-summary">
+            <div class="stat-pill">
+                <span class="stat-label">Accuracy</span>
+                <span id="stat-accuracy" class="stat-val">100%</span>
+            </div>
+            <div class="stat-pill">
+                <span class="stat-label">Shield Remaining</span>
+                <span id="stat-lives" class="stat-val">3 / 3</span>
+            </div>
+            <div class="stat-pill">
+                <span class="stat-label">Max Streak</span>
+                <span id="stat-streak" class="stat-val">5x</span>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn primary" onclick="restartQuiz()">🔄 PLAY AGAIN</button>
+        </div>
+    </section>
+
+</main>
+
+<!-- SETTINGS MODAL -->
+<div id="settings-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3>⚡ System Configuration</h3>
+            <button class="close-btn" onclick="toggleSettingsModal(false)">✕</button>
+        </div>
+        <p class="modal-desc">
+            The simulation has a pre-configured AI engine. You can optionally supply your own custom Gemini API Key below.
+        </p>
+        <div class="api-input-wrap">
+            <label for="api-key-input">Custom Gemini API Key</label>
+            <input type="password" id="api-key-input" placeholder="AIzaSy..." />
+        </div>
+        <div class="modal-actions">
+            <button class="btn primary" onclick="saveCustomApiKey()">Save & Close</button>
+        </div>
+        <div id="api-status" class="api-status-text">Using Pre-Loaded AI Engine</div>
+    </div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
