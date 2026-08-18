@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cyber Aware</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <main class="container">
+
+        <!-- HOME SCREEN -->
+        <section id="home-screen" class="screen">
+
+            <div class="shield">🛡️</div>
+
+            <h1>CYBER AWARE</h1>
+
+            <p class="tagline">
+                Think before you click.
+            </p>
+
+            <p>
+                Test your cybersecurity awareness through
+                real-world scenarios.
+            </p>
+
+            <button onclick="startQuiz()">
+                START SIMULATION
+            </button>
+
+        </section>
+
+
+        <!-- QUIZ SCREEN -->
+        <section id="quiz-screen" class="screen hidden">
+
+            <div class="top-bar">
+
+                <span id="question-number">
+                    Scenario 1 / 10
+                </span>
+
+                <span id="score">
+                    Score: 0
+                </span>
+
+            </div>
+
+            <div class="progress-container">
+                <div id="progress"></div>
+            </div>
+
+            <h2 id="question">
+                Question goes here
+            </h2>
+
+            <div id="options"></div>
+
+            <div id="feedback" class="hidden">
+
+                <h3 id="feedback-title"></h3>
+
+                <p id="feedback-text"></p>
+
+                <button onclick="nextQuestion()">
+                    NEXT SCENARIO →
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- RESULT SCREEN -->
+        <section id="result-screen" class="screen hidden">
+
+            <div class="shield">🏆</div>
+
+            <h1>SIMULATION COMPLETE</h1>
+
+            <div class="final-score">
+                <span id="final-score">0</span>/100
+            </div>
+
+            <h2 id="result-title"></h2>
+
+            <p id="result-description"></p>
+
+            <button onclick="restartQuiz()">
+                TRY AGAIN
+            </button>
+
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
