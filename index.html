@@ -165,3 +165,63 @@
 <script src="script.js"></script>
 </body>
 </html>
+
+    <!-- RESULT / BADGE SCREEN -->
+    <section id="result-screen" class="screen hidden">
+        <div class="shield-badge" id="result-badge">🏆</div>
+        <h1>SIMULATION REPORT</h1>
+
+        <div class="score-display">
+            <div class="final-score" id="final-score">0</div>
+            <span class="score-unit">TOTAL XP EARNED</span>
+        </div>
+
+        <h2 id="result-title">Cyber Sentinel</h2>
+        <p id="result-description" class="desc"></p>
+
+        <div class="stats-summary">
+            <div class="stat-pill">
+                <span class="stat-label">Accuracy</span>
+                <span id="stat-accuracy" class="stat-val">100%</span>
+            </div>
+            <div class="stat-pill">
+                <span class="stat-label">Shield Remaining</span>
+                <span id="stat-lives" class="stat-val">3 / 3</span>
+            </div>
+            <div class="stat-pill">
+                <span class="stat-label">Max Streak</span>
+                <span id="stat-streak" class="stat-val">5x</span>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn primary" onclick="restartQuiz()">🔄 PLAY AGAIN</button>
+        </div>
+    </section>
+
+</main>
+
+<!-- SETTINGS MODAL -->
+<div id="settings-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3>⚡ System Configuration</h3>
+            <button class="close-btn" onclick="toggleSettingsModal(false)">✕</button>
+        </div>
+        <p class="modal-desc">
+            The simulation has a pre-configured AI engine. You can optionally supply your own custom Gemini API Key below.
+        </p>
+        <div class="api-input-wrap">
+            <label for="api-key-input">Custom Gemini API Key</label>
+            <input type="password" id="api-key-input" placeholder="AIzaSy..." />
+        </div>
+        <div class="modal-actions">
+            <button class="btn primary" onclick="saveCustomApiKey()">Save & Close</button>
+        </div>
+        <div id="api-status" class="api-status-text">Using Pre-Loaded AI Engine</div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
